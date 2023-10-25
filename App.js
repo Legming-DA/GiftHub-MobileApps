@@ -1,10 +1,49 @@
-import React from "react";
-import { ScrollView, Text, StyleSheet, Image, View, ImageBackground, TextBase, TextInput } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, Text, StyleSheet, Image, View, ImageBackground, TextBase, TextInput, TouchableOpacity } from "react-native";
 import { Notification, SearchNormal, Receipt21, Element3, DocumentFilter, Candle2, AddCircle, Home2, 
 People, Calendar,Wallet} from "iconsax-react-native";
 import { fontType, colors } from "./src/theme";
+import { CategoryList } from "./data";
+
+// const ListCategory = ({item, onPress, color}) =>{
+//   return(
+//     <TouchableOpacity onPress={onPress}>
+//       <View style={category.item}>
+//         <Text style={{...category.title, color}}>
+//           {item.categoryName}
+//         </Text>
+//       </View>
+//     </TouchableOpacity>
+//   );
+// };
+
+// const FlatListCategory = () => {
+//   const [selected, setSelected] = useState(0);
+//   const renderItem = ({item}) => {
+//     const color = item.id === selected ? colors.pink() : colors.white();
+//     return(
+//       <ListCategory
+//       item={item}
+//       onPress={() => setSelected(item.id)}
+//       color={color}
+//       />
+//     );
+//   };
+//   return(
+//     <FlatListCategory
+//     data={CategoryList}
+//     keyExtractor={item => item.id}
+//     renderItem={item => renderItem({...item})}
+//     ItemSeparatorComponent={() => <View style={{width: 10}}/>}
+//     contentContainerStyle={{paddingHorizontal: 24}}
+//     horizontal
+//     showsHorizontalScrollIndicator={false}
+//     />
+//   );
+// };
 
 export default function App() {
+  const [selected, setSelected] = useState(0)
   return (
     <View style={styles.container}>
       <View style={styles.Headers}>
@@ -32,27 +71,28 @@ export default function App() {
         <Text style={styles.subheading}>See More</Text>
       </View>
       <View style={styles.listCategory}>
+        {/* <FlatListCategory/> */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={category.item}>
+          <TouchableOpacity style={[category.item, {backgroundColor: selected == 1 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(1)}>
             <Image source={require('./src/assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
             <Text style={category.title}>All Gift</Text>
-          </View>
-          <View style={category.item}>
+          </TouchableOpacity>
+          <TouchableOpacity style={[category.item, {backgroundColor: selected == 2 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(2)}>
           <Image source={require('./src/assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
             <Text style={category.title}>Birthday</Text>
-          </View>
-          <View style={category.item}>
+          </TouchableOpacity>
+          <TouchableOpacity style={[category.item, {backgroundColor: selected == 3 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(3)}>
           <Image source={require('./src/assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
             <Text style={category.title}>Wedding</Text>
-          </View>
-          <View style={category.item}>
+          </TouchableOpacity>
+          <TouchableOpacity style={[category.item, {backgroundColor: selected == 4 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(4)}>
           <Image source={require('./src/assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
             <Text style={category.title}>Valentine Day</Text>
-          </View>
-          <View style={category.item}>
+          </TouchableOpacity>
+          <TouchableOpacity style={[category.item, {backgroundColor: selected == 5 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(5)}>
           <Image source={require('./src/assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
             <Text style={category.title}>Anniversary</Text>
-          </View>
+          </TouchableOpacity>
         </ScrollView>
       </View>
       <View style={styles.text}>
