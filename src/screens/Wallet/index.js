@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { ScrollView, Text, StyleSheet, Image, View } from "react-native";
-import {
-  Home2, People, Calendar, Wallet, ArrowLeft, Scan, ArrangeHorizontal, EmptyWalletAdd, MoreCircle, Wifi, PercentageCircle, Coin,
+import { ScrollView, Text, StyleSheet, Image, View, TouchableOpacity } from "react-native";
+import { ArrowLeft, Scan, ArrangeHorizontal, EmptyWalletAdd, MoreCircle, Wifi, PercentageCircle, Coin,
   ShopAdd, TrendUp, CardAdd, Electricity
 } from "iconsax-react-native";
 import { fontType, colors } from "../../theme";
+import { useNavigation } from "@react-navigation/native";
 
 export default function App() {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <View style={styles.Headers}>
@@ -71,10 +72,10 @@ export default function App() {
             <ShopAdd size={25} varian="Linear" color={colors.black()} />
             <Text style={home.goText}>Merchant</Text>
           </View>
-          <View style={home.background}>
+          <TouchableOpacity style={home.background} onPress={()=> navigation.navigate('Calendars')}>
             <MoreCircle size={25} varian="Linear" color={colors.black()} />
             <Text style={home.goText}>More</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.text}>
           <Text style={styles.heading}>Promo & Discount</Text>
@@ -96,24 +97,6 @@ export default function App() {
           </View>
         </View>
       </ScrollView>
-      <View style={navbar.navButton}>
-        <View style={navbar.navIcon}>
-          <Home2 color={colors.pink()} variant="TwoTone" size={25} />
-          <Text style={navbar.navText}>Home</Text>
-        </View>
-        <View style={navbar.navIcon}>
-          <Wallet color={colors.pink()} variant="TwoTone" size={25} />
-          <Text style={navbar.navText}>Wallet</Text>
-        </View>
-        <View style={navbar.navIcon}>
-          <Calendar color={colors.pink()} variant="TwoTone" size={25} />
-          <Text style={navbar.navText}>Calendar</Text>
-        </View>
-        <View style={navbar.navIcon}>
-          <People color={colors.pink()} variant="TwoTone" size={25} />
-          <Text style={navbar.navText}>Connect</Text>
-        </View>
-      </View>
     </View>
   );
 }

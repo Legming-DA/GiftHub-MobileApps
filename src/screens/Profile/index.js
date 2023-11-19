@@ -102,24 +102,6 @@ export default function Profile() {
           </View>
         </View>
       </ScrollView>
-      <View style={navbar.navButton}>
-        <View style={navbar.navIcon}>
-          <Home2 color={colors.pink()} variant="TwoTone" size={25} />
-          <Text style={navbar.navText}>Home</Text>
-        </View>
-        <View style={navbar.navIcon}>
-          <Wallet color={colors.pink()} variant="TwoTone" size={25} />
-          <Text style={navbar.navText}>Wallet</Text>
-        </View>
-        <View style={navbar.navIcon}>
-          <Calendar color={colors.pink()} variant="TwoTone" size={25} />
-          <Text style={navbar.navText}>Calendar</Text>
-        </View>
-        <View style={navbar.navIcon}>
-          <People color={colors.pink()} variant="TwoTone" size={25} />
-          <Text style={navbar.navText}>Connect</Text>
-        </View>
-      </View>
     </View>
   );
 }

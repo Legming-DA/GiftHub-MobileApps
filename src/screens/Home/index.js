@@ -4,6 +4,7 @@ import { Notification, SearchNormal, Receipt21, Element3, DocumentFilter, Candle
 People, Calendar,Wallet} from "iconsax-react-native";
 import { fontType, colors } from "../../theme";
 import { CategoryList } from "../../../data";
+import { useNavigation } from "@react-navigation/native";
 
 // const ListCategory = ({item, onPress, color}) =>{
 //   return(
@@ -43,14 +44,15 @@ import { CategoryList } from "../../../data";
 // };
 
 export default function Home() {
+  const navigation = useNavigation()
   const [selected, setSelected] = useState(0)
   return (
     <View style={styles.container}>
       <View style={styles.Headers}>
         <Element3 color={colors.pink()} varian="linear" size={25} />
-        <View style={{ flexDirection: 'row', alignItems: "center" }}>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: "center" }} onPress={()=> navigation.navigate('Notifications')}>
           <Notification color={colors.black()} varian="linear" size={25} style={{ marginRight:-5 }} />
-        </View>
+        </TouchableOpacity>
       </View>
       <ScrollView>
       <View style={styles.searchrow}>
@@ -126,24 +128,6 @@ export default function Home() {
         </View>
       </View>
       </ScrollView>
-      <View style={navbar.navButton}>
-        <View style={navbar.navIcon}>
-        <Home2 color={colors.pink()} variant="TwoTone" size={25} />
-        <Text style={navbar.navText}>Home</Text>
-        </View>
-        <View style={navbar.navIcon}>
-        <Wallet color={colors.pink()} variant="TwoTone" size={25} />
-        <Text style={navbar.navText}>Wallet</Text>
-        </View>
-        <View style={navbar.navIcon}>
-        <Calendar color={colors.pink()} variant="TwoTone" size={25} />
-        <Text style={navbar.navText}>Calendar</Text>
-        </View>
-        <View style={navbar.navIcon}>
-        <People color={colors.pink()} variant="TwoTone" size={25} />
-        <Text style={navbar.navText}>Connect</Text>
-        </View>
-      </View>
     </View>
   );
 }
