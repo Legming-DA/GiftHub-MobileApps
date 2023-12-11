@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { ScrollView, Text, StyleSheet, View, Animated } from "react-native";
+import { ScrollView, Text, StyleSheet, View, Animated, TouchableOpacity } from "react-native";
 import { ArrowLeft, Scan, } from "iconsax-react-native";
 import { fontType, colors } from "../../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -27,7 +27,9 @@ export default function Notifications() {
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.Headers, { transform: [{ translateY: headerY }] }]}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
                 <ArrowLeft color={colors.white()} varian="linear" size={25} />
+                </TouchableOpacity>
                 <Text style={{ alignItems: "center", color: colors.white() }}>Notifications</Text>
             </Animated.View>
             <Animated.ScrollView showsVerticalScrollIndicator={false}

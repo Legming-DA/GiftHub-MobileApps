@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { ScrollView, Text, StyleSheet, Image, View, ImageBackground, TextBase, TextInput, TouchableOpacity } from "react-native";
-import { Notification, SearchNormal, Receipt21, Element3, DocumentFilter, Candle2, AddCircle, Home2, 
-People, Calendar,Wallet} from "iconsax-react-native";
+import React, { useCallback, useState } from "react";
+import { ScrollView, Text, StyleSheet, Image, View, TextInput, TouchableOpacity } from "react-native";
+import {
+  Notification, SearchNormal, Element3,  Candle2, AddCircle,} from "iconsax-react-native";
 import { fontType, colors } from "../../theme";
 import { CategoryList } from "../../../data";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import axios from 'axios';
 
 // const ListCategory = ({item, onPress, color}) =>{
 //   return(
@@ -46,87 +47,116 @@ import { useNavigation } from "@react-navigation/native";
 export default function Home() {
   const navigation = useNavigation()
   const [selected, setSelected] = useState(0)
+  const [loading, setLoading] = useState(true);
+  const [productData, setProductData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const getDataProduct = async () => {
+    try {
+      const response = await axios.get(
+        'https://65721457d61ba6fcc01458ad.mockapi.io/gifthubapp/product',
+      );
+      setProductData(response.data);
+      setLoading(false)
+    } catch (error) {
+        console.error(error);
+    }
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      getDataProduct()
+      setRefreshing(false);
+    }, 1500);
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      getDataProduct();
+    }, [])
+  );
   return (
     <View style={styles.container}>
       <View style={styles.Headers}>
         <Element3 color={colors.pink()} varian="linear" size={25} />
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: "center" }} onPress={()=> navigation.navigate('Notifications')}>
-          <Notification color={colors.black()} varian="linear" size={25} style={{ marginRight:-5 }} />
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: "center" }} onPress={() => navigation.navigate('Notifications')}>
+          <Notification color={colors.black()} varian="linear" size={25} style={{ marginRight: -5 }} />
         </TouchableOpacity>
       </View>
       <ScrollView>
-      <View style={styles.searchrow}>
-        <View style={styles.boxsearch}>
-          <SearchNormal color={colors.black()} varian="Linear" size={20} />
-          <TextInput size={14} placeholder=" Find Your Gift! " color={colors.black()} />
+        <View style={styles.searchrow}>
+          <View style={styles.boxsearch}>
+            <SearchNormal color={colors.black()} varian="Linear" size={20} />
+            <TextInput size={14} placeholder=" Find Your Gift! " color={colors.black()} />
+          </View>
+          <View style={styles.boxfilter}>
+            <Candle2 size={25} varian="Linear" color={colors.black()} />
+          </View>
         </View>
-        <View style={styles.boxfilter}>
-          <Candle2 size={25} varian="Linear" color={colors.black()} />
+        <View style={styles.card}>
+          <Image source={require('../../assets/img/pic1.png')} style={{ width: 345, height: 200, borderRadius: 10, top: -10 }} />
         </View>
-      </View>
-      <View style={styles.card}>
-        <Image source={require('../../assets/img/pic1.png')} style={{ width: 345, height: 200, borderRadius: 10, top:-10 }} />
-      </View>
-      <View style={styles.text}>
-        <Text style={styles.heading}>Categories</Text>
-        <Text style={styles.subheading}>See More</Text>
-      </View>
-      <View style={styles.listCategory}>
-        {/* <FlatListCategory/> */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity style={[category.item, {backgroundColor: selected == 1 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(1)}>
-            <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
-            <Text style={category.title}>All Gift</Text>
+        <View style={styles.text}>
+          <Text style={styles.heading}>Categories</Text>
+          <Text style={styles.subheading}>See More</Text>
+        </View>
+        <View style={styles.listCategory}>
+          {/* <FlatListCategory/> */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <TouchableOpacity style={[category.item, { backgroundColor: selected == 1 ? colors.pink(0.8) : colors.white() }]} onPress={() => setSelected(1)}>
+              <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10 }} />
+              <Text style={category.title}>All Gift</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[category.item, { backgroundColor: selected == 2 ? colors.pink(0.8) : colors.white() }]} onPress={() => setSelected(2)}>
+              <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10 }} />
+              <Text style={category.title}>Birthday</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[category.item, { backgroundColor: selected == 3 ? colors.pink(0.8) : colors.white() }]} onPress={() => setSelected(3)}>
+              <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10 }} />
+              <Text style={category.title}>Wedding</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[category.item, { backgroundColor: selected == 4 ? colors.pink(0.8) : colors.white() }]} onPress={() => setSelected(4)}>
+              <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10 }} />
+              <Text style={category.title}>Valentine Day</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[category.item, { backgroundColor: selected == 5 ? colors.pink(0.8) : colors.white() }]} onPress={() => setSelected(5)}>
+              <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10 }} />
+              <Text style={category.title}>Anniversary</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+        <View style={styles.text}>
+          <Text style={styles.heading}>New Arrivals</Text>
+          <Text style={styles.subheading}>See More</Text>
+        </View>
+        <View style={styles.card}>
+          <View style={styles.content}>
+            <Image source={require('../../assets/img/b4.jpg')} style={{ width: 100, height: 100, borderRadius: 50, top: -40 }} />
+            <Text style={{ top: -30 }}>Veil Bouqet</Text>
+            <Text style={{ top: -30, fontSize: 10 }}>Rp.10.000</Text>
+            <AddCircle color={colors.pink()} variant="Bold" size={25} />
+          </View>
+          <TouchableOpacity style={{ flexDirection: 'row', alignItems: "center" }} onPress={()=> navigation.navigate('DetailProduct')}>
+            <View style={styles.content}>
+              <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 100, height: 100, borderRadius: 50, top: -40 }} />
+              <Text style={{ top: -30 }}>Flower Bouqet</Text>
+              <Text style={{ top: -30, fontSize: 10 }}>Rp.15.000</Text>
+              <AddCircle color={colors.pink()} variant="Bold" size={25} />
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity style={[category.item, {backgroundColor: selected == 2 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(2)}>
-          <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
-            <Text style={category.title}>Birthday</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[category.item, {backgroundColor: selected == 3 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(3)}>
-          <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
-            <Text style={category.title}>Wedding</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[category.item, {backgroundColor: selected == 4 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(4)}>
-          <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
-            <Text style={category.title}>Valentine Day</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[category.item, {backgroundColor: selected == 5 ? colors.pink(0.8) : colors.white()}]} onPress={()=> setSelected(5)}>
-          <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 10, height: 10, borderRadius: 10}} />
-            <Text style={category.title}>Anniversary</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-      <View style={styles.text}>
-        <Text style={styles.heading}>New Arrivals</Text>
-        <Text style={styles.subheading}>See More</Text>
-      </View>
-      <View style={styles.card}>
-        <View style={styles.content}>
-          <Image source={require('../../assets/img/b4.jpg')} style={{ width: 100, height: 100, borderRadius: 50,top:-40}} />
-          <Text style={{top:-30}}>Veil Bouqet</Text>
-          <Text style={{top:-30, fontSize:10}}>Rp.10.000</Text>
-               <AddCircle color={colors.pink()} variant="Bold" size={25} />  
         </View>
-        <View style={styles.content}>
-          <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 100, height: 100, borderRadius: 50,top:-40 }} />
-          <Text style={{top:-30}}>Flower Bouqet</Text>
-          <Text style={{top:-30, fontSize:10}}>Rp.15.000</Text>
-          <AddCircle color={colors.pink()} variant="Bold" size={25} /> 
+        <View style={styles.card}>
+          <View style={styles.content}>
+            <Image source={require('../../assets/img/bk2.jpg')} style={{ width: 100, height: 100, borderRadius: 10 }} />
+            <Text>Lalala</Text>
+            <AddCircle color={colors.pink()} variant="Bold" size={25} />
+          </View>
+          <View style={styles.content}>
+            <Image source={require('../../assets/img/bk2.jpg')} style={{ width: 100, height: 100, borderRadius: 10 }} />
+            <Text>Lalala</Text>
+            <AddCircle color={colors.pink()} variant="Bold" size={25} />
+          </View>
         </View>
-      </View>
-      <View style={styles.card}>
-
-        <View style={styles.content}>
-          <Image source={require('../../assets/img/bk2.jpg')} style={{ width: 100, height: 100, borderRadius: 10 }} />
-          <Text>Lalala</Text>
-               <AddCircle color={colors.pink()} variant="Bold" size={25} />  
-        </View>
-        <View style={styles.content}>
-          <Image source={require('../../assets/img/bk2.jpg')} style={{ width: 100, height: 100, borderRadius: 10 }} />
-          <Text>Lalala</Text>
-          <AddCircle color={colors.pink()} variant="Bold" size={25} /> 
-        </View>
-      </View>
       </ScrollView>
     </View>
   );
@@ -223,7 +253,7 @@ const category = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     color: colors.black(),
-    paddingLeft:10,
+    paddingLeft: 10,
   },
   item: {
     paddingHorizontal: 14,
@@ -246,7 +276,7 @@ const navbar = StyleSheet.create({
     height: 60,
     elevation: 8,
     paddingBottom: 4,
-    borderRadius:50,
+    borderRadius: 50,
   },
   navIcon: {
     alignItems: 'center',

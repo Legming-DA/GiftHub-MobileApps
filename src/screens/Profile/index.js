@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { ScrollView, Text, StyleSheet, Image, View, TouchableOpacity } from "react-native";
-import {
-  Home2, People, Calendar, Wallet, ArrowLeft,
-  Edit2, Call, Sms, Heart, Moneys, TicketDiscount, LogoutCurve, Crown1, Setting2, MessageQuestion, Wallet2, Box, Truck, Like1
+import {ArrowLeft, Edit2, Call, Sms, Heart, Moneys, TicketDiscount, LogoutCurve, Crown1, 
+  Setting2, MessageQuestion, Wallet2, Box, Truck, Like1, 
 } from "iconsax-react-native";
 import { fontType, colors } from "../../theme";
 import { useNavigation } from "@react-navigation/native";
