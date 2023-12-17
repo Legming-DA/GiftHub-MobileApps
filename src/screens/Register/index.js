@@ -118,9 +118,9 @@ const Register = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={[styles.container, {paddingVertical}]}>
           <View>
-            <Text style={styles.header}>Sign up</Text>
+            <Text style={styles.header}>SIGN UP</Text>
             <Text style={styles.caption}>
-              It’s never too late to join Woco, we welcome you!
+              FOR YOUR ACCOUNT!
             </Text>
             <View style={styles.form}>
               <View>
@@ -182,13 +182,13 @@ const Register = () => {
                     {passwordVisible ? (
                       <EyeSlash
                         variant="Linear"
-                        color={colors.grey(0.6)}
+                        color={colors.black(0.5)}
                         size={20}
                       />
                     ) : (
                       <Eye
                         variant="Linear"
-                        color={colors.grey(0.6)}
+                        color={colors.black(0.5)}
                         size={20}
                       />
                     )}
@@ -222,13 +222,13 @@ const Register = () => {
                     {confirmPasswordVisible ? (
                       <EyeSlash
                         variant="Linear"
-                        color={colors.grey(0.6)}
+                        color={colors.black(0.5)}
                         size={20}
                       />
                     ) : (
                       <Eye
                         variant="Linear"
-                        color={colors.grey(0.6)}
+                        color={colors.black(0.5)}
                         size={20}
                       />
                     )}
@@ -244,7 +244,7 @@ const Register = () => {
                 {
                   backgroundColor: isSignupDisabled
                     ? colors.pink(0.8)
-                    : colors.blue(),
+                    : colors.pink(),
                 },
               ]}
               underlayColor={colors.blue(0.9)}
@@ -261,7 +261,7 @@ const Register = () => {
                 Already have an account?
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text style={[button.label, {color: colors.blue()}]}>
+                <Text style={[button.label, {color: colors.pink()}]}>
                   Log in
                 </Text>
               </TouchableOpacity>
@@ -283,9 +283,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   header: {
+    flexDirection:'row',
     fontSize: 32,
     fontFamily: fontType['Pjs-ExtraBold'],
     color: colors.black(),
+    justifyContent:'center'
   },
   caption: {
     fontFamily: fontType['Pjs-Regular'],

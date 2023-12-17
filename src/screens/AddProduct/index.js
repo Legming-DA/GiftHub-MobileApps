@@ -157,12 +157,12 @@ export default function AddProduct() {
                                     alignItems: 'center',
                                 },
                             ]}>
-                            <AddSquare color={colors.grey(0.6)} variant="Linear" size={42} />
+                            <AddSquare color={colors.black(0.5)} variant="Linear" size={42} />
                             <Text
                                 style={{
                                     fontFamily: fontType['Pjs-Regular'],
                                     fontSize: 12,
-                                    color: colors.grey(0.6),
+                                    color: colors.black(0.5),
                                 }}>
                                 Upload Thumbnail
                             </Text>
@@ -259,7 +259,9 @@ const textInput = StyleSheet.create({
       borderWidth: 1,
       borderRadius: 5,
       padding: 10,
-      borderColor: colors.grey(0.4),
+      borderColor: colors.black(0.5),
+      marginHorizontal:20,
+      marginTop: 5
     },
     title: {
       fontSize: 16,

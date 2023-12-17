@@ -7,44 +7,6 @@ import { CategoryList } from "../../../data";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import firestore from '@react-native-firebase/firestore';
 import { ItemProduct } from "../../components";
-// import axios from 'axios';
-
-// const ListCategory = ({item, onPress, color}) =>{
-//   return(
-//     <TouchableOpacity onPress={onPress}>
-//       <View style={category.item}>
-//         <Text style={{...category.title, color}}>
-//           {item.categoryName}
-//         </Text>
-//       </View>
-//     </TouchableOpacity>
-//   );
-// };
-
-// const FlatListCategory = () => {
-//   const [selected, setSelected] = useState(0);
-//   const renderItem = ({item}) => {
-//     const color = item.id === selected ? colors.pink() : colors.white();
-//     return(
-//       <ListCategory
-//       item={item}
-//       onPress={() => setSelected(item.id)}
-//       color={color}
-//       />
-//     );
-//   };
-//   return(
-//     <FlatListCategory
-//     data={CategoryList}
-//     keyExtractor={item => item.id}
-//     renderItem={item => renderItem({...item})}
-//     ItemSeparatorComponent={() => <View style={{width: 10}}/>}
-//     contentContainerStyle={{paddingHorizontal: 24}}
-//     horizontal
-//     showsHorizontalScrollIndicator={false}
-//     />
-//   );
-// };
 
 export default function Home() {
   const navigation = useNavigation()
@@ -155,14 +117,25 @@ export default function Home() {
         
         <View style={styles.card}>
           <View style={styles.content}>
-            <Image source={require('../../assets/img/bk2.jpg')} style={{ width: 100, height: 100, borderRadius: 10 }} />
-            <Text>Lalala</Text>
+          <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 100, height: 100, borderRadius: 50, top: -40 }} />
+            <Text style={{ top: -30, fontSize: 14 }}>Lalala</Text>
+            <Text style={{ top: -30, fontSize: 10 }}>Birthday</Text>
+            <View style={{flexDirection:'row', justifyContent:'space-evenly',}}>
+            <Text> 1000        </Text>
             <AddCircle color={colors.pink()} variant="Bold" size={25} />
           </View>
+            </View>
           <View style={styles.content}>
-            <Image source={require('../../assets/img/bk2.jpg')} style={{ width: 100, height: 100, borderRadius: 10 }} />
-            <Text>Lalala</Text>
+          <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 100, height: 100, borderRadius: 50, top: -40 }} />
+            <Text style={{ top: -30, fontSize: 14 }}>Lalala</Text>
+            <Text style={{ top: -30, fontSize: 10 }}>Birthday</Text>
+            
+            <View style={{flexDirection:'row', justifyContent:'space-evenly',}}>
+            </View>
+            <View style={{flexDirection:'row', justifyContent:'space-evenly',}}>
+            <Text> 1000        </Text>
             <AddCircle color={colors.pink()} variant="Bold" size={25} />
+            </View>
           </View>
         </View>
         

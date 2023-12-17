@@ -62,9 +62,9 @@ const Login = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View>
-          <Text style={styles.header}>Log in</Text>
+          <Text style={styles.header}>Welcome Back</Text>
           <Text style={styles.caption}>
-            Let’s log in to your account and roll in to Woco!
+            Sign In to Continue !
           </Text>
           <View style={styles.form}>
             <View>
@@ -109,11 +109,11 @@ const Login = () => {
                 />
                 <TouchableOpacity onPress={togglePasswordVisibility}>
                   {passwordVisible ? (
-                    <Eye variant="Linear" color={colors.grey(0.6)} size={20} />
+                    <Eye variant="Linear" color={colors.black(0.5)} size={20} />
                   ) : (
                     <EyeSlash
                       variant="Linear"
-                      color={colors.grey(0.6)}
+                      color={colors.black(0.5)}
                       size={20}
                     />
                   )}
@@ -162,7 +162,7 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white(),
+    backgroundColor: colors.bg(),
     paddingHorizontal: 24,
     paddingVertical: 60,
     justifyContent: 'space-between',
@@ -191,11 +191,12 @@ const textinput = StyleSheet.create({
     marginBottom: 5,
   },
   container: {
-    backgroundColor: colors.grey(0.05),
+    backgroundColor: colors.white(),
     height: 52,
     justifyContent: 'center',
     paddingHorizontal: 10,
     borderRadius: 10,
+    elevation:0.5
   },
   text: {
     paddingVertical: 0,

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {AddCircle} from 'iconsax-react-native';
+import { AddCircle } from 'iconsax-react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { fontType, colors } from '../theme';
@@ -10,24 +10,26 @@ const ItemProduct = ({ item }) => {
     const navigation = useNavigation();
     return (
         <View style={styles.card}>
-             <TouchableOpacity style={{ flexDirection: 'row', alignItems: "center" }}
-            onPress={() => navigation.navigate('DetailProduct', { productId: item.id })}>
-            <View style={styles.content}>
-                {/* <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 100, height: 100, borderRadius: 50, top: -40 }} /> */}
-                <FastImage
-                style={{ width: 100, height: 100, borderRadius: 50, top: -40 }}
-                source={{
-                    uri: item?.image,
-                    headers: { Authorization: 'someAuthToken' },
-                    priority: FastImage.priority.high,
-                }}
-                resizeMode={FastImage.resizeMode.cover}
-            />
-                <Text style={{ top: -30 }}>{item?.productName}</Text>
-                <Text style={{ top: -30, fontSize: 10 }}>{item?.price}</Text>
-                <AddCircle color={colors.pink()} variant="Bold" size={25} />
-            </View>
-        </TouchableOpacity>
+            <TouchableOpacity style={{ flexDirection: 'row', alignItems: "center" }}
+                onPress={() => navigation.navigate('DetailProduct', { productId: item.id })}>
+                <View style={styles.content}>
+                    <FastImage
+                        style={{ width: 100, height: 100, borderRadius: 50, top: -40 }}
+                        source={{
+                            uri: item?.image,
+                            headers: { Authorization: 'someAuthToken' },
+                            priority: FastImage.priority.high,
+                        }}
+                        resizeMode={FastImage.resizeMode.cover}
+                    />
+                    <Text style={{ top: -30, fontSize: 14 }}>{item?.productName}</Text>
+                    <Text style={{ top: -30, fontSize: 10 }}>{item?.category}</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', }}>
+                        <Text> {item?.price}        </Text>
+                        <AddCircle color={colors.pink()} variant="Bold" size={25} />
+                    </View>
+                </View>
+            </TouchableOpacity>
         </View>
     );
 };
