@@ -1,17 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ScrollView, Text, StyleSheet, View, Animated, TextInput, TouchableOpacity, Image } from "react-native";
-import { ArrowLeft, More, Scan, ShoppingBag, } from "iconsax-react-native";
+import { Text, StyleSheet, View, Animated, TouchableOpacity, } from "react-native";
+import { ArrowLeft, More, ShoppingBag, } from "iconsax-react-native";
 import { fontType, colors } from "../../theme";
 import { useNavigation } from "@react-navigation/native";
 import ActionSheet from "react-native-actions-sheet";
-import axios from 'axios';
+import FastImage from 'react-native-fast-image';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
 
-
-
-export default function DetailProduct() {
+export default function DetailProduct({ route }) {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const { productId } = route.params;
     const actionSheetRef = useRef(null);
 
     const openActionSheet = () => {
@@ -23,35 +23,49 @@ export default function DetailProduct() {
     };
 
     useEffect(() => {
-        getProductById();
+        const subscriber = firestore()
+            .collection('product')
+            .doc(productId)
+            .onSnapshot(documentSnapshot => {
+                const productData = documentSnapshot.data();
+                if (productData) {
+                    console.log('Product data: ', productData);
+                    setSelectedProduct(productData);
+                } else {
+                    console.log(`Product with ID ${productId} not found.`);
+                }
+            });
+        setLoading(false);
+        return () => subscriber();
     }, [productId]);
-
-    const getProductById = async () => {
-        try {
-            const response = await axios.get(
-                `https://65721457d61ba6fcc01458ad.mockapi.io/gifthubapp/product/${productId}`,
-            );
-            setSelectedProduct(response.data);
-            setLoading(false);
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     const navigateEdit = () => {
         closeActionSheet()
         navigation.navigate('EditProduct', { productId })
     }
     const handleDelete = async () => {
-        await axios.delete(`https://65721457d61ba6fcc01458ad.mockapi.io/gifthubapp/product/${productId}`)
-            .then(() => {
-                closeActionSheet()
-                navigation.navigate('Home');
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
+        setLoading(true);
+        try {
+            await firestore()
+                .collection('product')
+                .doc(productId)
+                .delete()
+                .then(() => {
+                    console.log('Product deleted!');
+                });
+            if (selectedProduct?.image) {
+                const imageRef = storage().refFromURL(selectedProduct?.image);
+                await imageRef.delete();
+            }
+            console.log('Product deleted!');
+            closeActionSheet();
+            setSelectedProduct(null);
+            setLoading(false)
+            navigation.navigate('Home');
+        } catch (error) {
+            console.error(error);
+        }
+    };
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
     const diffClampY = Animated.diffClamp(scrollY, 0, 52);
@@ -65,7 +79,7 @@ export default function DetailProduct() {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <ArrowLeft color={colors.white()} varian="linear" size={25} />
                 </TouchableOpacity >
-                <Text style={{ alignItems: "center", color: colors.white() }}>Flower Bouqet</Text>
+                <Text style={{ alignItems: "center", color: colors.white() }}>{selectedProduct?.productName}</Text>
                 <TouchableOpacity onPress={openActionSheet}>
                     <More
                         color={colors.white()}
@@ -79,40 +93,38 @@ export default function DetailProduct() {
                     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                     { useNativeDriver: true },
                 )}>
-                
                 <View style={styles.card}>
-                    <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 300, height: 300, borderRadius: 10, top: -10 }} />
+                    <FastImage source={{
+                        uri: selectedProduct?.image,
+                        headers: { Authorization: 'someAuthToken' },
+                        priority: FastImage.priority.high,
+                    }}
+                        style={{ width: 300, height: 300, borderRadius: 10, top: -10 }} />
                 </View>
                 <View style={styles.text}>
                     <Text style={styles.heading}>Description :</Text>
-                    <Text style={styles.heading}>Rp 100.000</Text>
+                    <Text style={styles.heading}>{selectedProduct?.price}</Text>
                 </View>
-                <Text style={styles.subheading}>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    It has survived not only five centuries, but also the leap into electronic typesetting,
-                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-                    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    It has survived not only five centuries, but also the leap into electronic typesetting,
-                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset </Text>
-                    <View style={{...styles.card, justifyContent:'space-evenly'}}>
+                <Text style={styles.subheading}>{selectedProduct?.description} </Text>
+                <View style={{ ...styles.card, justifyContent: 'space-evenly' }}>
                     <View style={styles.button}>
                         <Text
-                        style={{
-                            fontFamily: fontType['Pjs-Medium'],
-                            color: colors.white(),
-                            fontSize: 16,}}>Buy Now</Text>
+                            style={{
+                                fontFamily: fontType['Pjs-Medium'],
+                                color: colors.white(),
+                                fontSize: 16,
+                            }}>Buy Now</Text>
                     </View>
                     <View style={styles.button}>
                         <Text
-                        style={{
-                            fontFamily: fontType['Pjs-Medium'],
-                            color: colors.white(),
-                            fontSize: 16,}}>Add To Cart</Text>
+                            style={{
+                                fontFamily: fontType['Pjs-Medium'],
+                                color: colors.white(),
+                                fontSize: 16,
+                            }}>Add To Cart</Text>
                         <ShoppingBag color={colors.white()} varian="linear" size={28} />
                     </View>
-                    </View>
-                    
+                </View>
             </Animated.ScrollView>
             <ActionSheet
                 ref={actionSheetRef}
@@ -198,7 +210,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         marginHorizontal: 20,
-      },
+    },
     text: {
         marginTop: 5,
         flexDirection: 'row',
@@ -261,7 +273,3 @@ const styles = StyleSheet.create({
         paddingTop: 12,
     },
 });
-
-
-
-

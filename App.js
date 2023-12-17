@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AddProduct, Calendars, Home, Notifications, Profile, Wallets, DetailProduct, EditProduct } from './src/screens';
+import { AddProduct, Calendars, Home, Notifications, Profile, Wallets, DetailProduct, EditProduct, Login, Register } from './src/screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -33,13 +33,23 @@ const Bottom = () => {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Register">
         <Stack.Screen options={{ headerShown: false }} name='Bottom' component={Bottom} />
         <Stack.Screen options={{ headerShown: false }} name='Notifications' component={Notifications} />
         <Stack.Screen options={{ headerShown: false }} name='AddProduct' component={AddProduct} />
         <Stack.Screen options={{ headerShown: false }} name='DetailProduct' component={DetailProduct} />
         <Stack.Screen options={{ headerShown: false }} name='EditProduct' component={EditProduct} />
         <Stack.Screen options={{ headerShown: false }} name='Home' component={Home} />
+        <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
       </Stack.Navigator>
     </NavigationContainer>
   )

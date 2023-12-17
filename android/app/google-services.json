@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "48914023112",
+    "project_id": "gifthub-app-2d5ea",
+    "storage_bucket": "gifthub-app-2d5ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:48914023112:android:d169cb8e4e1be6efa85bfd",
+        "android_client_info": {
+          "package_name": "com.gifthub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMgNejD_xAEFkRgMD7WY3O0uAAVC2MiFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

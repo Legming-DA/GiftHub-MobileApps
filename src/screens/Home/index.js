@@ -1,11 +1,13 @@
-import React, { useCallback, useState } from "react";
-import { ScrollView, Text, StyleSheet, Image, View, TextInput, TouchableOpacity } from "react-native";
+import React, { useCallback, useState, useEffect } from "react";
+import { ScrollView, Text, StyleSheet, Image, View, TextInput, TouchableOpacity, ActivityIndicator, RefreshControl} from "react-native";
 import {
   Notification, SearchNormal, Element3,  Candle2, AddCircle,} from "iconsax-react-native";
 import { fontType, colors } from "../../theme";
 import { CategoryList } from "../../../data";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import axios from 'axios';
+import firestore from '@react-native-firebase/firestore';
+import { ItemProduct } from "../../components";
+// import axios from 'axios';
 
 // const ListCategory = ({item, onPress, color}) =>{
 //   return(
@@ -50,31 +52,42 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [productData, setProductData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const getDataProduct = async () => {
-    try {
-      const response = await axios.get(
-        'https://65721457d61ba6fcc01458ad.mockapi.io/gifthubapp/product',
-      );
-      setProductData(response.data);
-      setLoading(false)
-    } catch (error) {
-        console.error(error);
-    }
-  };
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('product')
+      .onSnapshot(querySnapshot => {
+        const products = [];
+        querySnapshot.forEach(documentSnapshot => {
+          products.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setProductData(products);
+        setLoading(false);
+      });
+    return () => subscriber();
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
-      getDataProduct()
+      firestore()
+        .collection('product')
+        .onSnapshot(querySnapshot => {
+          const products = [];
+          querySnapshot.forEach(documentSnapshot => {
+            products.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
+            });
+          });
+          setProductData(products);
+        });
       setRefreshing(false);
     }, 1500);
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      getDataProduct();
-    }, [])
-  );
   return (
     <View style={styles.container}>
       <View style={styles.Headers}>
@@ -83,7 +96,9 @@ export default function Home() {
           <Notification color={colors.black()} varian="linear" size={25} style={{ marginRight: -5 }} />
         </TouchableOpacity>
       </View>
-      <ScrollView>
+      <ScrollView refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={styles.searchrow}>
           <View style={styles.boxsearch}>
             <SearchNormal color={colors.black()} varian="Linear" size={20} />
@@ -129,22 +144,15 @@ export default function Home() {
           <Text style={styles.heading}>New Arrivals</Text>
           <Text style={styles.subheading}>See More</Text>
         </View>
-        <View style={styles.card}>
-          <View style={styles.content}>
-            <Image source={require('../../assets/img/b4.jpg')} style={{ width: 100, height: 100, borderRadius: 50, top: -40 }} />
-            <Text style={{ top: -30 }}>Veil Bouqet</Text>
-            <Text style={{ top: -30, fontSize: 10 }}>Rp.10.000</Text>
-            <AddCircle color={colors.pink()} variant="Bold" size={25} />
-          </View>
-          <TouchableOpacity style={{ flexDirection: 'row', alignItems: "center" }} onPress={()=> navigation.navigate('DetailProduct')}>
-            <View style={styles.content}>
-              <Image source={require('../../assets/img/bk3.jpg')} style={{ width: 100, height: 100, borderRadius: 50, top: -40 }} />
-              <Text style={{ top: -30 }}>Flower Bouqet</Text>
-              <Text style={{ top: -30, fontSize: 10 }}>Rp.15.000</Text>
-              <AddCircle color={colors.pink()} variant="Bold" size={25} />
-            </View>
-          </TouchableOpacity>
+        
+        <View style={{paddingVertical: 10, gap: 10}}>
+          {loading ? (
+            <ActivityIndicator size={'large'} color={colors.blue()} />
+          ) : (
+            productData.map((item, index) => <ItemProduct item={item} key={index} />)
+          )}
         </View>
+        
         <View style={styles.card}>
           <View style={styles.content}>
             <Image source={require('../../assets/img/bk2.jpg')} style={{ width: 100, height: 100, borderRadius: 10 }} />
@@ -157,6 +165,7 @@ export default function Home() {
             <AddCircle color={colors.pink()} variant="Bold" size={25} />
           </View>
         </View>
+        
       </ScrollView>
     </View>
   );
